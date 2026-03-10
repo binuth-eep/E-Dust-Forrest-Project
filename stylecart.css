@@ -1,0 +1,22 @@
+body { font-family: 'Segoe UI', sans-serif; background: #f0f2f5; display: flex; justify-content: center; padding: 20px; }
+.checkout-container { background: white; width: 450px; padding: 30px; border-radius: 15px; box-shadow: 0 10px 25px rgba(0,0,0,0.1); }
+
+/* Progress Bar Styling */
+#progressbar { display: flex; justify-content: space-between; padding: 0; margin-bottom: 30px; counter-reset: step; }
+#progressbar li { list-style: none; position: relative; width: 33.33%; text-align: center; color: #ccc; font-weight: bold; }
+#progressbar li:before { content: counter(step); counter-increment: step; width: 30px; height: 30px; border: 2px solid #ccc; display: block; margin: 0 auto 10px; border-radius: 50%; line-height: 27px; background: white; }
+#progressbar li.active { color: #2ecc71; }
+#progressbar li.active:before { border-color: #2ecc71; background: #2ecc71; color: white; }
+
+/* Step Visibility */
+.step-content { display: none; }
+.active-step { display: block; animation: fadeIn 0.5s ease; }
+
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+
+/* Inputs & Buttons */
+.input-field { width: 100%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 5px; box-sizing: border-box; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif; }
+.btn-group { display: flex; gap: 10px; margin-top: 20px; }
+.next-btn, .finish-btn { flex: 1; background: #2ecc71; color: white; border: none; padding: 12px; border-radius: 5px; cursor: pointer; }
+.back-btn { flex: 1; background: #bdc3c7; border: none; padding: 12px; border-radius: 5px; cursor: pointer; }
+.total { font-weight: bold; font-size: 20px; text-align: right; margin: 15px 0; }

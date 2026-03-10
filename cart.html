@@ -3,9 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Checkout Page</title>
+    <link rel="stylesheet" href="stylecart.css">
 </head>
 <body>
+
+<div class="checkout-container">
+    <ul id="progressbar">
+        <li class="active">Cart</li>
+        <li>Shipping</li>
+        <li>Payment</li>
+    </ul>
+
+    <div class="step-content active-step" id="step1">
+        <h2>Review Your Cart</h2>
+        <div class="item-row">
+            <span>Premium T-Shirt</span>
+            <span>Rs. 2,500</span>
+        </div>
+        <hr>
+        <div class="total">Total: Rs. 2,500</div>
+        <button class="next-btn" onclick="goToStep(2)">Next: Shipping</button>
+    </div>
+
+    <div class="step-content" id="step2">
+        <h2>Shipping Details</h2>
+        <input type="text" id="fullName" placeholder="Full Name" class="input-field">
+        <textarea id="address" placeholder="Delivery Address" class="input-field"></textarea>
+        <input type="tel" id="phone" placeholder="Phone Number (10 digits)" class="input-field" maxlength="10">
+        
+        <div class="btn-group">
+            <button class="back-btn" onclick="goToStep(1)">Back</button>
+            <button class="next-btn" onclick="validateStep2()">Next: Payment</button>
+        </div>
+    </div>
+
+<div class="step-content" id="step3">
+    <h2>Payment Method</h2>
     
+    <div class="payment-options">
+        <label><input type="radio" name="pay" value="card" checked onchange="togglePaymentFields()"> Visa / Master Card</label><br>
+        <label><input type="radio" name="pay" value="cod" onchange="togglePaymentFields()"> Cash on Delivery</label>
+    </div>
+
+    <div id="card-details" style="margin-top: 15px;">
+        <input type="text" placeholder="Card Holder Name" class="input-field" pattern="[A-Za-z ]+">
+        <input type="text" placeholder="Card Number" class="input-field">
+        <div style="display: flex; gap: 10px;">
+            <input type="text" placeholder="MM/YY" class="input-field" style="width: 50%;">
+            <input type="text" placeholder="CVV" class="input-field" style="width: 50%;">
+        </div>
+    </div>
+    
+    <div style="background: #eaffda; padding: 15px; border-radius: 5px; margin-bottom: 20px;">
+        <p>Subtotal: Rs. 2,500</p>
+        <p>Delivery Fee: Rs. 300</p>
+        <hr>
+        <strong>Final Amount: Rs. <span id="final-total-2">2,800</span></strong>
+    </div>
+
+    <div style="margin-top: 15px; font-size: 14px;">
+        <label>
+        <input type="checkbox" id="termsCheckbox" required>
+        I agree to the <a href="#">Terms and Conditions</a> and <a href="#">Privacy Policy</a>.
+        </label>
+    </div>
+    <div class="btn-group">
+        <button class="back-btn" onclick="goToStep(2)">Back</button>
+        <button class="finish-btn" onclick="finish()">Confirm Order</button>
+    </div>
+</div>
+
+<script src="cart.js"></script>
 </body>
 </html>

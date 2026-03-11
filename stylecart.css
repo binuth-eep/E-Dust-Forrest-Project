@@ -7,7 +7,14 @@
 
 body {
     font-family: 'Segoe UI', Roboto, sans-serif;
-    background-color: #edf2f7;
+    
+    /* Background Image setup */
+    background-image: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('images/forrestbg.jpg'); /* Oya gawa thiyena image eke nama mekata danna */
+    background-size: cover;          /* Image eka screen ekata hariyanna size wenawa */
+    background-position: center;     /* Image eka center wenawa */
+    background-repeat: no-repeat;    /* Image eka repeat wenne naha */
+    background-attachment: fixed;    /* Scroll kalath image eka fixed wela thiyenawa */
+    
     display: flex;
     justify-content: center;
     align-items: center;
@@ -16,12 +23,21 @@ body {
 }
 
 .checkout-container {
-    background: white;
-    width: 95%;
-    max-width: 550px;
-    padding: 40px;
-    border-radius: 20px;
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+    /* පසුබිම සුදු පාට වෙනුවට transparent සුදු පාටක් ලබා දීම */
+    background: rgba(209, 235, 184, 0.4); 
+    
+    /* Blur effect එක ලබා දීම (Glass look එක එන්න) */
+    backdrop-filter: blur(2px); 
+    -webkit-backdrop-filter: blur(3px);
+    
+    /* Border එකක් දැම්මොත් තවත් ලස්සනයි */
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    
+    width: 95%; 
+    max-width: 550px; 
+    padding: 40px; 
+    border-radius: 20px; 
+    box-shadow: 0 10px 30px rgba(0,0,0,0.2);
 }
 
 /* Stepper Design */
@@ -162,7 +178,7 @@ body {
 /* Summary */
 .cart-summary,
 .payment-info-box {
-    background: var(--bg-gray);
+    background: rgb(168, 212, 168);
     padding: 20px;
     border-radius: 15px;
     margin: 25px 0;
@@ -222,6 +238,7 @@ body {
 .primary-btn:hover {
     background: #27ae60;
     transform: translateY(-2px);
+    box-shadow: 0 5px 15px rgba(46, 204, 113, 0.4);
 }
 
 .sec-btn {
@@ -288,6 +305,13 @@ body {
 .step-content {
     display: none;
     animation: fadeIn 0.4s;
+}
+
+.step-content {
+    background: rgba(216, 255, 220, 0.8);
+    padding: 30px;
+    border-radius: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.08); /* සැහැල්ලු Shadow එකක් */
 }
 
 .active-step {

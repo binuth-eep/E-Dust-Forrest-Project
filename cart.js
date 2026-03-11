@@ -62,19 +62,46 @@ function removeItem(id) {
 }
 
 function finish() {
-    if(!document.getElementById('terms').checked) return alert("Please agree to terms.");
+    // 1. Terms and Conditions පරීක්ෂා කිරීම
+    const termsChecked = document.getElementById('terms').checked;
+    if (!termsChecked) {
+        alert("Please agree to the Terms & Conditions to proceed.");
+        return; // මෙතැනින් function එක නතර වෙනවා
+    }
+
+    // 2. Payment Method එක අනුව පරීක්ෂා කිරීම
+    const paymentMethod = document.querySelector('input[name="pay"]:checked').value;
     
-    let btn = document.getElementById('submitBtn');
+    if (paymentMethod === 'card') {
+        // Card details fields තියෙන container එක
+        const cardInputs = document.querySelectorAll('#card-details input');
+        let cardValid = true;
+        
+        cardInputs.forEach(input => {
+            if (input.value.trim() === "") {
+                cardValid = false;
+            }
+        });
+
+        if (!cardValid) {
+            alert("Please fill in all card details.");
+            return;
+        }
+    }
+
+    // 3. සියල්ල හරි නම් පමණක් Order එක Process කිරීම
+    const btn = document.getElementById('submitBtn');
     btn.innerText = "Processing...";
     btn.disabled = true;
 
+    // Order ID logic...
     let lastOrder = localStorage.getItem('lastOrderNumber') || 1000;
     let nextOrder = parseInt(lastOrder) + 1;
     localStorage.setItem('lastOrderNumber', nextOrder);
 
     setTimeout(() => {
         document.getElementById('checkout-main').style.display = 'none';
-        document.getElementById('success-page').style.display = 'block';
+        document.getElementById('success-page').style.display = 'flex';
         document.getElementById('order-id-display').innerText = "SL-" + nextOrder;
     }, 1500);
 }

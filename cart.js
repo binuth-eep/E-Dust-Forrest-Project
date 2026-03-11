@@ -1,98 +1,80 @@
-// Navigation Function
-function goToStep(stepNumber) {
-    // Hide all steps
-    document.querySelectorAll('.step-content').forEach(content => {
-        content.classList.remove('active-step');
-    });
+let unitPrice = 2500;
+let deliveryFee = 300;
 
-    // Show current step
-    document.getElementById('step' + stepNumber).classList.add('active-step');
-
-    // Update progress bar
-    document.querySelectorAll('#progressbar li').forEach((li, index) => {
-        if (index < stepNumber) {
-            li.classList.add('active');
-        } else {
-            li.classList.remove('active');
-        }
-    });
+function changeQty(amt) {
+    let qtyInput = document.getElementById('qty');
+    if (!qtyInput) return;
+    let newQty = parseInt(qtyInput.value) + amt;
+    if (newQty >= 1) {
+        qtyInput.value = newQty;
+        updateAllTotals();
+    }
 }
 
-// Validation Function for Shipping
-function validateStep2() {
-    const name = document.getElementById('fullName').value.trim();
-    const address = document.getElementById('address').value.trim();
-    const phone = document.getElementById('phone').value.trim();
+function updateAllTotals() {
+    let qtyInput = document.getElementById('qty');
+    let qty = qtyInput ? parseInt(qtyInput.value) : 0;
+    let subtotal = unitPrice * qty;
+
+    let isCod = document.querySelector('input[name="pay"]:checked')?.value === 'cod';
+    let codFee = isCod ? 100 : 0;
+    let total = subtotal + deliveryFee + codFee;
+
+    // UI Updates
+    const updateText = (id, val) => { if(document.getElementById(id)) document.getElementById(id).innerText = val.toLocaleString(); };
     
-    // Check if fields are empty
-    if (name === "" || address === "" || phone === "") {
-        alert("Please fill in all shipping details.");
-        return;
-    }
+    updateText('item-total-price', subtotal);
+    updateText('subtotal', subtotal);
+    updateText('summary-subtotal', subtotal);
+    updateText('final-total-1', total);
+    updateText('final-total-2', total);
 
-    // Check for 10 digits
-    const phonePattern = /^\d{10}$/;
-    if (!phonePattern.test(phone)) {
-        alert("Please enter a valid 10-digit phone number.");
-        document.getElementById('phone').focus();
-        return;
-    }
+    if(document.getElementById('cod-fee-row')) document.getElementById('cod-fee-row').style.display = isCod ? 'flex' : 'none';
+    if(document.getElementById('card-details')) document.getElementById('card-details').style.display = isCod ? 'none' : 'block';
+}
 
-    // If valid, move to step 3
+function goToStep(n) {
+    // Hide all contents
+    document.querySelectorAll('.step-content').forEach(c => c.classList.remove('active-step'));
+    // Update Stepper Circles
+    document.querySelectorAll('.step').forEach((s, idx) => {
+        if(idx + 1 <= n) s.classList.add('active');
+        else s.classList.remove('active');
+    });
+    // Show current step
+    document.getElementById('step' + n).classList.add('active-step');
+    updateAllTotals();
+}
+
+function validateStep2() {
+    let fields = ['fullName', 'address', 'phone'];
+    let valid = fields.every(id => document.getElementById(id).value.trim().length > 0);
+    if(!valid) return alert("Please fill all shipping details.");
     goToStep(3);
 }
 
-function togglePaymentFields() {
-    const cardDetails = document.getElementById('card-details');
-    const codFeeDisplay = document.getElementById('cod-fee-display');
-    const totalDisplay = document.getElementById('final-total-2');
-    
-    const selectedPay = document.querySelector('input[name="pay"]:checked').value;
-    
-    // Base prices
-    const subtotal = 2500;
-    const deliveryFee = 300;
-    let finalTotal = subtotal + deliveryFee;
-
-    if (selectedPay === 'card') {
-        cardDetails.style.display = 'block';
-        codFeeDisplay.style.display = 'none';
-    } else {
-        cardDetails.style.display = 'none';
-        codFeeDisplay.style.display = 'block';
-        finalTotal += 100; // Adding COD Fee
+function removeItem(id) {
+    if(confirm("Remove this item from cart?")) {
+        document.getElementById(id).remove();
+        unitPrice = 0;
+        updateAllTotals();
     }
-
-    // Update the final total display
-    totalDisplay.innerText = finalTotal.toLocaleString();
 }
 
-// Finalization Function
 function finish() {
-    // Check which payment method is selected
-    const selectedPay = document.querySelector('input[name="pay"]:checked').value;
+    if(!document.getElementById('terms').checked) return alert("Please agree to terms.");
+    
+    let btn = document.getElementById('submitBtn');
+    btn.innerText = "Processing...";
+    btn.disabled = true;
 
-    if (selectedPay === 'card') {
-        // Simple check to see if card fields are filled
-        // You can add more complex pattern matching here later
-        const cardInputs = document.querySelectorAll('#card-details input');
-        let allFilled = true;
-        
-        cardInputs.forEach(input => {
-            if (input.value.trim() === "") {
-                allFilled = false;
-            }
-        });
+    let lastOrder = localStorage.getItem('lastOrderNumber') || 1000;
+    let nextOrder = parseInt(lastOrder) + 1;
+    localStorage.setItem('lastOrderNumber', nextOrder);
 
-        if (!allFilled) {
-            alert("Please enter your card details to proceed.");
-            return; // Stop here if details are missing
-        }
-    }
-
-    // If COD or Card details are filled, proceed
-    alert("Success! Your order has been placed successfully. Thank you for shopping with us!");
-    window.location.reload(); 
+    setTimeout(() => {
+        document.getElementById('checkout-main').style.display = 'none';
+        document.getElementById('success-page').style.display = 'block';
+        document.getElementById('order-id-display').innerText = "SL-" + nextOrder;
+    }, 1500);
 }
-
-x   
